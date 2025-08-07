@@ -1,10 +1,16 @@
 
-# Campus-Network-Topology
+# Network-Topology (media Company)
 
-The following topology demonstrates a hierarchical network topology with a collapsed core while employing software-defined networking (Automation).
+**summary of the network:**
 
-The Branch networks are linked with a single-hub DMVPN for site-to-site VPN connectivity. 
-The network is also configured as BGP-AS-64511 as a non-transit Network, with ISPs only advertising a default route to the HQ site.
+The topology demonstrates a Dual stack (IPv4 and IPv6) network topology with a collapsed core while employing software-defined networking (Automation).
+
+All remote sites are linked with a single-hub DMVPN for site-to-site VPN connectivity, with IPv6 as the transport network and IPv4 as the overlay network. 
+
+The network is also configured as BGP-AS-5689 as a non-transit Network.
+
+Internet connectivity is through IPv6 while internal and remote site connectivity is IPv4 only.
+
 
 ![Topology](/Network/Topology.png)
 
@@ -15,7 +21,7 @@ The network Employs various layer 2 protocols namely:
 
 **LACP**:
 
-CORE switches and Access switches are configured with LACP in active-active mode.
+The core switch and Access switches are configured with LACP in active-active mode.
 Verification is seen below on the ACC-SW1:
 
 
@@ -32,22 +38,6 @@ Group  Port-channel  Protocol    Ports
 
 ```
 
-**Rapid PVST+ and Load balancing**:
-
-CORE-SW-1 acts as the root bridge for both VLAN-10 and VLAN-12 traffic and CORE-SW-2 acts as the root bridge for VLAN-11.
-
-Porfast and BPDUguard features are enabled on all access switchports.
-
-``` bash
-CORE-SWITCH-1#sh spanning-tree summary totals 
-Switch is in rapid-pvst mode
-Root bridge for: VLAN0001, VLAN0010, VLAN0012
-
-CORE-SWITCH-2#sh spanning-tree summary totals 
-Switch is in rapid-pvst mode
-Root bridge for: VLAN0001, VLAN0011
-```
-
 
 ## Layer 3 connectivity:
 The network Employs various layer 3 protocols namely:
@@ -55,222 +45,211 @@ The network Employs various layer 3 protocols namely:
 
 **InterVLAN Routing**:
 
+
 The network topology is designed as a collapsed core, where the core switches assume the responsibilities of both the core and distribution layers. 
 
 InterVLAN routing is configured, enabling communication between different VLANs within the network.
 
-To enhance network resilience and load sharing, in InterVLAN routing HSRPv2 is implemented.
-
-```bash
-CORE-SWITCH-1#sh standby brief 
-                     P indicates configured to preempt.
-                     |
-Interface   Grp  Pri P State   Active          Standby         Virtual IP
-Vl10        10   110 P Active  local           192.168.10.2    192.168.10.3
-Vl11        11   90  P Standby 192.168.11.2    local           192.168.11.3
-Vl12        12   100 P Active  local           192.168.12.2    192.168.12.3
-
-
-CORE-SWITCH-2#sh standby brief 
-                     P indicates configured to preempt.
-                     |
-Interface   Grp  Pri P State   Active          Standby         Virtual IP
-Vl10        10   100 P Standby 192.168.10.1    local           192.168.10.3
-Vl11        11   100 P Active  local           192.168.11.1    192.168.11.3
-Vl12        12   90  P Standby 192.168.12.1    local           192.168.12.3
-```
 
 **Multi-Area OSPF**:
 
-In the HQ region, OSPF is implemented to manage and optimize the routing infrastructure. 
+In the HQ region, OSPFv3 (both IPv4 and IPv6) is implemented to manage and optimize the routing infrastructure. 
+
 The network architecture employs inter-area OSPF, specifically designed to enhance scalability and manageability through the segmentation of the network into designated areas.
 
-By utilizing OSPF as the routing protocol and implementing inter-area OSPF, the network achieves a more modular and organized structure. 
+By utilizing OSPF as the routing protocol and implementing inter-area OSPF, the network achieves a more modular and organized structure.
+
 Each designated area within the HQ region can operate independently, allowing for improved network performance, reduced routing overhead, (controlled LSA propagation).
+
+
 
 ```bash
 Sample config
-CORE-SWITCH-1#sh ip route ospf
-!
-Gateway of last resort is 10.0.0.2 to network 0.0.0.0
+CORE_SWITCH#sh ip route ospfv3
 
-O*E2  0.0.0.0/0 [110/1] via 10.0.0.2, 02:10:04, Ethernet2/0
-      10.0.0.0/8 is variably subnetted, 12 subnets, 3 masks
-O        10.0.0.4/30 [110/30000] via 10.0.20.2, 02:09:44, Ethernet1/0
-O        10.0.20.4/30 [110/20000] via 10.0.20.2, 02:09:44, Ethernet1/0
-O IA     10.0.51.0/30 [110/20000] via 10.0.0.2, 02:10:04, Ethernet2/0
-O IA     10.0.51.12/30 [110/40000] via 10.0.20.2, 02:09:44, Ethernet1/0
-O E2     10.1.10.0/23 [110/20] via 10.0.0.2, 02:08:41, Ethernet2/0
-O E2     10.1.20.0/23 [110/20] via 10.0.0.2, 02:08:37, Ethernet2/0
-O IA  192.168.20.0/24 [110/20000] via 10.0.20.2, 02:09:44, Ethernet1/0
-CORE-SWITCH-1#
+Gateway of last resort is not set
 
-
+      172.19.0.0/16 is variably subnetted, 6 subnets, 2 masks
+O IA     172.19.18.0/24 [110/10010] via 10.19.18.6, 01:10:54, Ethernet2/2
+                        [110/10010] via 10.19.18.2, 01:10:54, Ethernet2/1
+O IA     172.19.19.0/25 [110/30000] via 10.0.0.10, 01:10:49, Ethernet3/1
+O IA     172.19.19.128/25 [110/20000] via 10.0.0.10, 01:10:49, Ethernet3/1
+O E2     172.19.111.0/24 [110/20] via 10.0.0.14, 01:09:59, Ethernet2/3
+O E2     172.19.112.0/24 [110/20] via 10.0.0.14, 01:09:59, Ethernet2/3
+O E2     172.19.116.0/24 [110/20] via 10.0.0.14, 01:09:59, Ethernet2/3
+      172.20.0.0/24 is subnetted, 2 subnets
+O E2     172.20.1.0 [110/20] via 10.0.0.14, 01:09:58, Ethernet2/3
+O E2     172.20.2.0 [110/20] via 10.0.0.14, 01:09:31, Ethernet2/3
+O E2  192.168.0.0/24 [110/20] via 10.0.0.14, 01:04:58, Ethernet2/3
+CORE_SWITCH#
+CORE_SWITCH#
+CORE_SWITCH#sh ipv6 route ospf
+IPv6 Routing Table - default - 4 entries
+OE2 ::/0 [110/1], tag 1
+     via FE80::253, Ethernet3/2
+     via FE80::254, Ethernet3/3
+OI  2001:32:19:18::/64 [110/10010]
+     via FE80::18, Ethernet2/2
+     via FE80::18, Ethernet2/1
+OI  2001:32:19:86::/64 [110/20000]
+     via FE80::253, Ethernet3/2
+     via FE80::254, Ethernet3/3
+CORE_SWITCH#
 ```
 
 **EIGRP**:
 
-Within the network infrastructure, EIGRP is deployed to facilitate routing within mGRE tunnels, specifically configured under DMVPN architecture.
+Within the network infrastructure, EIGRP is used in routing within mGRE tunnels, specifically configured under DMVPN architecture.
 
 To enhance the efficiency of the network, spokes within the mGRE tunnels are optimized as stub routers. 
-This minimizes the likelihood of Stuck-in-Active scenarios.
 
-Use of MD5 authentication, ensuring the integrity and authenticity of EIGRP messages exchanged within the mGRE tunnels. 
+This minimizes the likelihood of Stuck-in-Active scenarios.
 
 Bandwidth optimization feature is employed to limit EIGRP bandwidth usage.
 
-The bandwidth metric (K3) is configured as the only metric to be used in path calculation.
 
 ```bash
 Sample config:
 
-BRANCH-A-ROUTER-2#sh running-config | s r e
+TX-STN-1#sh running-config | s r e
 router eigrp EIGRP
  !
  address-family ipv4 unicast autonomous-system 100
   !
-  af-interface Tunnel10
-   summary-address 10.1.10.0 255.255.254.0
-   authentication mode md5
-   authentication key-chain EIGRP-KEY
+  af-interface Tunnel0
    bandwidth-percent 25
   exit-af-interface
   !
-  af-interface Ethernet0/0.10
-   passive-interface
-  exit-af-interface
-  !
-  af-interface Ethernet0/0.11
+  af-interface Ethernet0/0
    passive-interface
   exit-af-interface
   !
   topology base
   exit-af-topology
-  network 10.1.10.0 0.0.0.255
-  network 10.1.11.0 0.0.0.255
-  network 172.20.0.0 0.0.0.255
-  metric weights 0 0 0 1 0 0 0
+  network 172.20.1.0 0.0.0.255
+  network 192.168.0.0
   eigrp stub connected summary
  exit-address-family
+
 ```
 
 **Multicast  PIM-sparse-mode**
 
-The media server is used to send multicast traffic to branch router by use of PIM sparse mode.
+The media server is used to send multicast traffic from studio to main uplink station.
 
-The DMVPN hub acts as the Rendesvous point.
-
-The firewall DMZ is configured with .50 encapsulation on E0/3 for VLAN 50 to carry multicast traffic and forms EIGRP neighborship with the Hub on this trunk link (VLAN 50)
+The stream_RTR acts as RP.
 
 To verify Multicast routing:
 
 ```bash
-Media-server#ping 239.1.1.50 source 192.168.50.254
+STREAM_MEDIA_ROUTER#ping 239.1.1.10
 Type escape sequence to abort.
-Sending 1, 100-byte ICMP Echos to 239.1.1.50, timeout is 2 seconds:
-Packet sent with a source address of 192.168.50.254
+Sending 1, 100-byte ICMP Echos to 239.1.1.10, timeout is 2 seconds:
 
-Reply to request 0 from 10.1.21.2, 23 ms
-Reply to request 0 from 10.1.10.1, 24 ms
+Reply to request 0 from 172.19.19.1, 1 ms
 ```
 
 The multicast routing table can be verified on the Hub router:
 ```bash
-DMVPN-HUB-ROUTER#sh ip mroute
-Outgoing interface flags: H - Hardware switched, A - Assert winner, p - PIM Join
- Timers: Uptime/Expires
- Interface state: Interface, Next-Hop or VCD, State/Mode
-
-(*, 239.1.1.50), 00:13:54/00:03:20, RP 172.20.0.1, flags: S
+STREAM_MEDIA_ROUTER#sh ip mroute
+ 
+(*, 239.1.1.10), 01:16:58/00:03:17, RP 10.0.0.13, flags: SF
   Incoming interface: Null, RPF nbr 0.0.0.0
   Outgoing interface list:
-    Tunnel10, Forward/Sparse, 00:13:54/00:03:20
+    Ethernet0/2, Forward/Sparse, 01:16:58/00:03:17
 
-(192.168.50.254, 239.1.1.50), 00:01:30/00:02:23, flags: T
-  Incoming interface: Ethernet0/3.50, RPF nbr 10.0.50.2
+(172.19.19.129, 239.1.1.10), 00:00:48/00:02:46, flags: FT
+  Incoming interface: Ethernet0/1, RPF nbr 0.0.0.0
   Outgoing interface list:
-    Tunnel10, Forward/Sparse, 00:01:30/00:03:20
+    Ethernet0/2, Forward/Sparse, 00:00:48/00:03:17
 
-(*, 224.0.1.40), 00:15:20/00:03:21, RP 172.20.0.1, flags: SJCL
-  Incoming interface: Null, RPF nbr 0.0.0.0
-  Outgoing interface list:
-    Tunnel10, Forward/Sparse, 00:13:55/00:03:21
-    Ethernet0/3.50, Forward/Sparse, 00:15:19/00:02:42
+(10.0.0.13, 239.1.1.10), 00:00:48/00:02:16, flags: PT
+  Incoming interface: Ethernet0/2, RPF nbr 0.0.0.0
+  Outgoing interface list: Null
+
 ```
 
 
 **BGP**:
 
-BGP peering is formed between EDGE routers and their connected ISPs.
+BGP peering is formed between EDGE routers and their connected ISPs for both IPv4 and IPv6.
 Within the HQ's network architecture, BGP is implemented with a focus as a non-transit site. 
 In a non-transit scenario, the network primarily manages its own routes and communicates with external networks, but does not forward traffic on behalf of third-party networks.
 
-The design also involves the propagation of only a default BGP route to the Campus network from the ISPs.
 This reduces the size of the BGP routing table.
 
 
-To optimize the distribution of BGP traffic and ensure load-sharing, egress traffic is directed to exit through the Edge-1 router, by use of HSRPv2. 
-To enable **automatic fail-over**, HSRP is configured in conjunction with IP-SLA and object tracking to track reachability of 44.67.28.1/32
+Egress traffic is directed to exit through the Edge-1 router, by configuring two Default IPv6 routes on the edge firewalls,one in conjuction with IPSLA (object tracking) and the other with a higher AD
 
 Ingress traffic is routed through Edge-2 by applying AS-prepending to  32.19.86.0/24 prefix on Edge-1 outbound, influencing the inbound traffic flow through Edge-2 as a better path.
 
 
 ```bash
-router bgp 64511
+rrouter bgp 5689
  bgp log-neighbor-changes
- network 32.19.86.0 mask 255.255.255.0
- neighbor 44.67.28.1 remote-as 100
- neighbor 44.67.28.1 route-map AS-prepending-map out
- neighbor 44.67.28.1 filter-list 10 out
-!
+ neighbor 2001:4:6:2::1 remote-as 100
+ neighbor 44.67.27.5 remote-as 100
+ !
+ address-family ipv4
+  network 32.19.86.0 mask 255.255.255.0
+  no neighbor 2001:4:6:2::1 activate
+  neighbor 44.67.27.5 activate
+  neighbor 44.67.27.5 route-map AS-PREPENDING-MAP out
+ exit-address-family
+ !
+ address-family ipv6
+  network 2001:32:19:86::/64
+  aggregate-address 2001:32:19::/48 summary-only
+  neighbor 2001:4:6:2::1 activate
+  neighbor 2001:4:6:2::1 route-map AS-PREPENDING-MAP out
+ exit-address-family
+
 ip as-path access-list 10 permit ^$
 !
-route-map AS-prepending-map permit 10
+route-map AS-PREPENDING-MAP permit 10
  match as-path 10
- set as-path prepend 64511 64511
-```
+ set as-path prepend 5689 5689
+
+ ```
 
 **Redistribution**:
 
-OSPF redistribution, Redistributes EIGRP spoke LAN prefixes into the OSPF domain.
-EIGRP redistribution: Redistributes Area 20 and VLAN 12 prefixes into EIGRP.
+OSPFv3 redistribution: Redistributes EIGRP spoke LAN IPv4 prefixes into the OSPF domain.
+EIGRP redistribution: Redistributes Area 18 and 19 IPv4 prefixes into EIGRP.
 DMVPN-ROUTER is responsible for redistribution between OSPF and EIGRP domain.
-The EIGRP Add-path feature enables redundant prefix advertisement for 10.1.10.0/23 and 10.1.20.0/23 prefixes.
-
-```bash
-
-BRANCH-A-ROUTER-1#sh ip route eigrp
-D        10.0.50.0/24 [90/517120] via 172.20.0.1, 00:00:27, Tunnel10
-D        10.1.10.0/23 is a summary, 00:00:27, Null0
-D        10.1.20.0/23 [90/522240] via 172.20.0.5, 00:00:27, Tunnel10
-                      [90/522240] via 172.20.0.4, 00:00:27, Tunnel10
-D        10.1.30.0/24 [90/522240] via 172.20.0.7, 00:00:27, Tunnel10
-D EX  192.168.20.0/24 [170/56320] via 172.20.0.1, 00:00:27, Tunnel10
-D     192.168.50.0/24 [90/1029120] via 172.20.0.1, 00:00:27, Tunnel10
+The EIGRP Add-path feature enables redundant prefix advertisement for prefixes in Regional offices.
 
 
-
-FW-MANAGEMENT-ZONE#sh ip route ospf
-
-O E2     10.0.50.0/24 [110/20] via 10.0.20.5, 01:21:41, Ethernet0/3
-                      [110/20] via 10.0.20.1, 01:21:41, Ethernet0/2
-O E2     10.1.10.0/23 [110/20] via 10.0.20.5, 01:16:54, Ethernet0/3
-                      [110/20] via 10.0.20.1, 01:16:54, Ethernet0/2
-O E2     10.1.20.0/23 [110/20] via 10.0.20.5, 01:16:43, Ethernet0/3
-                      [110/20] via 10.0.20.1, 01:16:43, Ethernet0/2
-O E2     10.1.30.0/24 [110/20] via 10.0.20.5, 01:16:41, Ethernet0/3
-                      [110/20] via 10.0.20.1, 01:16:41, Ethernet0/2
-      172.20.0.0/24 is subnetted, 1 subnets
-O E2     172.20.0.0 [110/20] via 10.0.20.5, 01:21:41, Ethernet0/3
-                    [110/20] via 10.0.20.1, 01:21:41, Ethernet0/2
-O E2  192.168.50.0/24 [110/20] via 10.0.20.5, 01:21:21, Ethernet0/3
-                      [110/20] via 10.0.20.1, 01:21:21, Ethernet0/2
-
-```
 
 ## Automating the Network:
 The SDN controller is hosted on an Ubuntu server, serving as a centralized platform for orchestrating network configurations. 
-Its primary function is to manage and automate network tasks through Python scripts.
+Its primary function is to manage and automate network tasks through Python scripts and Ansible playbooks.
+
+
+**Automating using Ansible playbook**
+The controller uses ansible YML files to automate the network with SSH acting as the southbound controller.
+Here's a sample OSPF verification playbook:
+
+```bash
+---
+- name: OSPF PROTOCOL INFORMATION
+  hosts: dmvpn_hub
+  gather_facts: no
+  tasks:
+   - name: "gathering OSPFv3 information..."
+     cisco.ios.ios_facts:
+       gather_network_resources:
+         - ospfv3
+
+   - name: "print gathered ospfv3 information"
+     debug:
+        msg:
+          - hostname: "{{ansible_facts.net_hostname}}"
+          - OSPF: "{{ansible_facts.network_resources}}"
+
+ ```
+
+**Automation using Python:**
 Python uses Netmiko library.
 Netmiko relies on SSH as its Southbound Interface for communication with network devices. 
 
@@ -410,25 +389,27 @@ DMVPN phase 2 with IPsec is used to secure communications between the HQ and the
 EIGRP is the protocol of choice for routing through the mGRE tunnel.
 
 ```bash
-DMVPN-HUB-ROUTER#sh ip route eigrp
-
-Gateway of last resort is 32.19.86.3 to network 0.0.0.0
-
-      10.0.0.0/8 is variably subnetted, 10 subnets, 3 masks
-D        10.1.10.0/23 [90/517120] via 172.20.0.3, 00:30:26, Tunnel10
-                      [90/517120] via 172.20.0.2, 00:30:26, Tunnel10
-D        10.1.20.0/23 [90/517120] via 172.20.0.5, 00:27:24, Tunnel10
-                      [90/517120] via 172.20.0.4, 00:27:24, Tunnel10
-
-
-DMVPN-HUB-ROUTER#sh crypto isakmp sa
+DMVPN_HUB_ROUTER#sh crypto isakmp sa
 IPv4 Crypto ISAKMP SA
 dst             src             state          conn-id status
-32.19.86.254    44.67.28.6      QM_IDLE           1003 ACTIVE
-32.19.86.254    72.73.74.10     QM_IDLE           1004 ACTIVE
-32.19.86.254    44.67.28.10     QM_IDLE           1001 ACTIVE
-32.19.86.254    72.73.74.6      QM_IDLE           1002 ACTIVE
 
+IPv6 Crypto ISAKMP SA
+
+ dst: 2001:32:19:86::252
+ src: 2001:44:68:1::A
+ state: QM_IDLE         conn-id:   1001 status: ACTIVE
+
+ dst: 2001:32:19:86::252
+ src: 2001:72:74:1::B
+ state: QM_IDLE         conn-id:   1003 status: ACTIVE
+
+ dst: 2001:32:19:86::252
+ src: 2001:44:68:1::D
+ state: QM_IDLE         conn-id:   1002 status: ACTIVE
+
+ dst: 2001:32:19:86::252
+ src: 2001:72:74:1::D
+ state: QM_IDLE         conn-id:   1004 status: ACTIVE
 
 ```
 
@@ -436,42 +417,14 @@ dst             src             state          conn-id status
 
 **Zone-Based Firewalls**
 
-Zone-based firewall services are configured on the Edge-Firewall (FW-EDGE) with stateful traffic inspection from Inside(Private network) to the Internet.
-```bash
-FIREWALL-EDGE#sh policy-map type inspect zone-pair private-Internet-zone
+Zone-based firewall services are configured on the Edge-Firewalls (FW-EDGE) with stateful traffic inspection from Inside(Private network) to the Internet.
+This is done so that even though the whole IPv6 address block **2001:32:19::48** is advertised only 
+**2001:32:19:86::/64** is allowed from the Internet.
+The rest of the prefixes (used in LAN arent accessible)
 
-policy exists on zp Private-Internet-zone
-  Zone-pair: Private-Internet-zone
 
-  Service-policy inspect : Private-Internet-policy
-
-    Class-map: Private-Internet-class (match-all)
-      Match: access-group name Private-Internet-acl
-
-   Inspect
-        Packet inspection statistics [process switch:fast switch]
-        tcp packets: [1276:0]
-        udp packets: [1296:0]
-        icmp packets: [8:0]
-
-        Session creations since subsystem startup or last reset 116
-        Current session counts (estab/half-open/terminating) [53:6:0]
-        Maxever session counts (estab/half-open/terminating) [53:18:3]
-        Last session created 00:00:00
-        Last statistic reset never
-        Last session creation rate 115
-        Maxever session creation rate 115
-        Last half-open session total 6
-        TCP reassembly statistics
-        received 0 packets out-of-order; dropped 0
-        peak memory usage 0 KB; current usage: 0 KB
-        peak queue length 0
-    Class-map: class-default (match-any)
-      Match: any
-      Drop
-        0 packets, 0 bytes
-```
-On the Network Mangement block Only DHCP, SYSLOG, DNS, NefFlow and 192.168.12.0/24 (admin) traffic is allowed from outside-in
+On the Network Mangement block Only DHCP, SYSLOG, DNS, NefFlow and MGT VLAN (172.19.16.0/24)traffic is allowed from outside-in
+The monitoring server is configured with 172.19.18.150 while DHCP server is 172.19.18.200
 
 ```bash
 FW-MANAGEMENT-ZONE#sh policy-map type inspect zone-pair Outside-Inside-zone
@@ -502,11 +455,11 @@ policy exists on zp Outside-Inside-zone
 
 FW-MANAGEMENT-ZONE#sh ip access-lists Outside-Inside-acl
 Extended IP access list Outside-Inside-acl
-    10 permit udp any host 192.168.20.254 eq snmptrap (14 matches)
-    20 permit udp any host 192.168.20.254 eq syslog
-    30 permit udp any host 192.168.20.254 eq bootps
-    40 permit ip 192.168.12.0 0.0.0.255 192.168.20.0 0.0.0.255
-    50 permit udp any host 192.168.20.254 eq domain
+    10 permit udp any host 172.19.18.150 eq snmptrap (14 matches)
+    20 permit udp any host 172.19.18.150 eq syslog
+    30 permit udp any host 172.19.18.50 eq bootps
+    40 permit ip 172.19.16.0 0.0.0.255 172.19.18.0 0.0.0.255
+    50 permit udp any host 172.19.18.150 eq domain
 ```
 
 **Control plane Policing (CoPP)**
@@ -555,28 +508,8 @@ EDGE-ROUTER-1#sh policy-map control-plane
         conformed 0000 bps, exceeded 0000 bps, violated 0000 bps
 ```
 
-**Content filtering and Security using DNS**
 
-By using OpenDNS the Edge firewall and branch edge routers are configured to only allow DNS queries to openDNS host addresses.
-
-All other DNS queries are filtered.
-This approach helps in filtering malicious and adult content.
-
-```bash
-ip access-list extended Private-Internet-acl
- permit tcp any any
- permit udp any host 208.67.220.123 eq domain
- permit udp any host 208.67.222.123 eq domain
- deny   udp any any eq domain
- permit udp any any
- permit icmp any any
-```
-
-
-## NAT and Quality of Service
-Branch Officies' routers are configured with NAT to have internet connection rather than having traffic backhauled to HQ.
-However, Firewall and QoS polices are similar across the branch routers for a uniform Internet policy.
-
+# Quality of Service
 Scavenger traffic (torrents and leisure streaming platforms) is dropped.
 Social media traffic is policed to 512Kbps.
 
@@ -616,73 +549,6 @@ BRANCH-A-ROUTER-1#sh policy-map interface e0/0.10
         conformed 0000 bps, exceeded 0000 bps
 ```
 
-**mGRE tunnel OoS**
-
-Per Tunnel QOS is implemented to give priority to voice traffic 10% bandwidth and 20% CBWFQ for network management traffic (SNMP, SYSLOG)
-
-NHRP group configured '*NHRP-20MBPS*' for spokes with 20Mbps internet(tunnel interface) and '*NHRP-10MBPS*' for spokes with
-10Mbps internet (tunnel interfaces)
-
-This can be verified on the Hub router below for spoke BR-A1 at 20Mbps CIR:
-```bash
-
-DMVPN-HUB-ROUTER#sh policy-map multipoint 
- 
-Interface Tunnel10 <--> 44.67.28.6 
-
-  Service-policy output: 20MBPS-Tunnel-Policy
-
-    Class-map: class-default (match-any)  
-      1596 packets, 179136 bytes
-      5 minute offered rate 0000 bps, drop rate 0000 bps
-      Match: any 
-      Queueing
-      queue limit 2500 packets
-      (queue depth/total drops/no-buffer drops) 0/0/0
-      (pkts output/bytes output) 1596/285336
-      shape (average) cir 20000000, bc 80000, be 80000
-      target shape rate 20000000
-
-      Service-policy : 20MBPS-child-policy
-
-        queue stats for all priority classes:
-          Queueing
-          queue limit 250 packets
-          (queue depth/total drops/no-buffer drops) 0/0/0
-          (pkts output/bytes output) 0/0
-
-        Class-map: Network-Management-class (match-any)  
-          335 packets, 41206 bytes
-          5 minute offered rate 0000 bps, drop rate 0000 bps
-          Match: protocol snmp
-            255 packets, 33014 bytes
-            5 minute rate 0 bps
-          Match: protocol syslog
-            0 packets, 0 bytes
-            5 minute rate 0 bps
-          Match: protocol ssh
-            80 packets, 8192 bytes
-            5 minute rate 0 bps
-          Match:  dscp cs2 (16)
-            0 packets, 0 bytes
-            5 minute rate 0 bps
-          Queueing
-          queue limit 500 packets
-          (queue depth/total drops/no-buffer drops) 0/0/0
-          (pkts output/bytes output) 335/64578
-          bandwidth 20% (2000 kbps)
-          
-        Class-map: Voice-class (match-any)  
-          0 packets, 0 bytes
-          5 minute offered rate 0000 bps, drop rate 0000 bps
-          Match: protocol rtp-audio
-            0 packets, 0 bytes
-            5 minute rate 0 bps
-          Match:  dscp ef (46)
-            0 packets, 0 bytes
-            5 minute rate 0 bps
-          Priority: 10% (1000 kbps), burst bytes 25000, b/w exceed drops: 0
-```
 
 ## Network Monitoring
 All Routers, Switches  are configured to send SNMP traps to the MGT server.
@@ -697,7 +563,7 @@ ISP-SWITCH-2#sh monitor session all
 Session 1
 ---------
 Type                     : Remote Destination Session
-Source RSPAN VLAN      : 66
+Source RSPAN VLAN      : 87
 Destination Ports      : Et3/2
     Encapsulation      : Native
 
@@ -714,7 +580,7 @@ Sample SNMP config:
   snmp-server community device_snmp RO SNMP-SERVER
   snmp-server system-shutdown
   snmp-server enable traps config
-  snmp-server host 192.168.20.254 version 2c device_snmp
+  snmp-server host 172.19.18.150 version 2c device_snmp
 ```
 
 
@@ -725,5 +591,5 @@ Sample SNMP config:
 * SDN conroller: [Ubuntu VM](https://ubuntu.com/desktop)
 * Windows server: [Windows_Server_2016_Datacenter_EVAL_en-us_14393_refresh](https://www.microsoft.com/en-us/evalcenter/evaluate-windows-server-2016)
 * IDS: [Ostinato Wireshark](https://gns3.com/marketplace/appliances/ostinato-wireshark)
-* Admin-PC: Windows 8.1 ISO VM
+* UserPC: Windows 7 ISO VM
 * End-user PCs: [Webterm Docker](https://gns3.com/marketplace/appliances/webterm)

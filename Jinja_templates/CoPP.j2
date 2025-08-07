@@ -3,13 +3,20 @@
 {% if eigrp_enabled == 'Y' and ospf_enabled == 'N' %}
   ip access-list extended Routing-Protocol-acl
   permit eigrp any host 224.0.0.10
+  ipv6 access-list extended
+  permit udp any host ff02::a
 {% elif ospf_enabled == 'Y' and eigrp_enabled == 'N' %}
   ip access-list extended Routing-Protocol-acl
   permit ospf any host 224.0.0.5
+  ipv6 access-list extended
+  permit udp any host ff02::5
 {% elif eigrp_enabled =='Y' and ospf_enabled == 'Y' %}
   ip access-list extended Routing-Protocol-acl
   permit eigrp any host 224.0.0.10
   permit ospf any host 224.0.0.5
+  ipv6 access-list extended
+  permit udp any host ff02::5
+  permit udp any host ff02::a
 {% else %}
   ip access-list extended Routing-Protocol-acl
   permit tcp any any eq bgp

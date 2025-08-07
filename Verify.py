@@ -2,29 +2,8 @@
 from netmiko import ConnectHandler
 from itertools import chain
 from rich import print as rp
-from Network.Devices import Routers, Spokes, Firewalls, Edge_Routers, Switches
+from Network.Devices import Routers, vpn_routers, Firewalls, Edge_Routers
 
-
-
-# VERIFYING SPANNING-TREE SUMMARY
-rp('\n[bold cyan]----------Verifying SPANNING TREE LOAD BALANCING---------[/bold cyan]')   
-for devices in Routers.values():
-    c = ConnectHandler(**devices)
-    c.enable()
-    host  = c.send_command('show version', use_textfsm=True)[0]['hostname']
-    output = (c.send_command('show spanning-tree summary totals'))
-    rp(host,output, sep='\n')
-
-
-
-# VERIFYING ETHERCHANNELS
-rp('\n[bold cyan]----------Verifying Etherchannels---------[/bold cyan]')  
-for devices in Routers.values():
-    c = ConnectHandler(**devices)
-    c.enable()
-    host  = c.send_command('show version', use_textfsm=True)[0]['hostname']
-    output = c.send_command('show etherchannel summary')
-    rp(host,output, sep='\n')
 
 
 
