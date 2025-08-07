@@ -1,0 +1,25 @@
+---
+## CONFIGURE CRYPTOGRAPHY ON VPN ROUTERS ##
+- name: CONFIGURING VPN IPSEC SETTINGS ON VPN ROUTERS
+  hosts: vpn_routers
+  gather_facts: no
+
+  vars_prompt:
+    - name: isakmp_policy
+      prompt: "Enter ISAKMP policy number"
+      private: no
+
+    - name: pre_shared_key
+      prompt: "Enter pre-shared key"
+      private: no
+
+    - name: transform_set_name
+      prompt: "Enter transform-set name"
+      private: no
+
+    - name: profile_name
+      prompt: "Enter crypto profile name"
+      private: no
+  roles: 
+    - vpn_cfg
+

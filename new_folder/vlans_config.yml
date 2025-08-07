@@ -1,0 +1,37 @@
+
+- name: CONFIGURING VLANS AND SVIs 
+  hosts: core_sw_1
+  gather_facts: no
+  vars:
+    vlan_config:
+      - id: 10
+        name: STUDIO_BROADCAST
+        ip: 172.19.10.1 
+
+      - id: 11
+        name: EDITORIAL
+        ip: 172.19.11.1 
+
+      - id: 12
+        name: HR_ADMIN_ACC
+        ip: 172.19.12.1 
+
+      - id: 13
+        name: EXECUTIVE
+        ip: 172.19.13.1
+
+      - id: 14
+        name: INTERNET_USERS
+        ip: 172.19.14.1 
+
+      - id: 15
+        name: IoT
+        ip: 172.19.15.1 
+
+      - id: 16
+        name: MGT_IT_INFRA
+        ip: 172.19.16.1 
+  roles:
+    - vlans_cfg
+
+

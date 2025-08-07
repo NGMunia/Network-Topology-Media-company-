@@ -1,0 +1,18 @@
+---
+- name: OSPF PROTOCOL INFORMATION
+  hosts: edge_routers, stream_routers, firewalls
+  gather_facts: no
+  tasks:
+   - name: "gathering OSPFv3 information..."
+     cisco.ios.ios_facts:
+       gather_network_resources:
+         - ospfv3
+
+   - name: "print gathered ospfv3 information"
+     debug:
+        msg:
+          - hostname: "{{ansible_facts.net_hostname}}"
+          - OSPF: "{{ansible_facts.network_resources}}"
+ 
+
+  

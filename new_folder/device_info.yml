@@ -1,0 +1,21 @@
+
+- name: DEVICE INFORMATION
+  hosts: all
+  gather_facts: no
+  tasks:
+    - name: "Gathering Device information..."
+      cisco.ios.ios_facts:
+       gather_subset:
+        - default
+        # - interfaces
+        # - config
+        # - hardware
+
+    - name: "print gathered information"
+      debug: 
+        # var: ansible_facts
+        msg:
+          hostname: "{{ ansible_facts.net_hostname }}"
+          ios image: "{{ ansible_facts.net_image }}"
+          version: "{{ansible_facts.net_version}}"
+          serial: "{{ansible_facts.net_serialnum}}"

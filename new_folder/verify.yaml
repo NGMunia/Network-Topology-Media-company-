@@ -1,0 +1,36 @@
+---
+- name: "show Core_switches information"
+  hosts: Core_switches
+  gather_facts: no
+
+  tasks:
+    - name: "gather Information from core switches"
+      cisco.ios.ios_facts:
+        gather_subset:
+          - default
+
+    - name: show Switch information
+      debug:   
+          msg:
+            hostname: "{{ ansible_facts.net_hostname }}"
+            ios image: "{{ ansible_facts.net_image }}"
+            version: "{{ansible_facts.net_version}}"
+            serial: "{{ansible_facts.net_serialnum}}"
+
+
+- name: Gather OSPF information
+  hosts: Core_switches
+  gather_facts: no
+
+  tasks:
+   - name: OSPF information
+     cisco.ios.ios_facts:
+       gather_network_resources:
+         - ospfv2
+
+   - name: print OSPF information gathered
+     debug:
+       msg:
+         - hostname: "{{ansible_facts.net_hostname}}"
+         - OSPF: "{{ansible_facts.network_resources}}"
+            

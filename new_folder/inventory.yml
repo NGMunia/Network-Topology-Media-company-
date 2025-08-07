@@ -1,0 +1,44 @@
+
+all:
+  children:
+    routers:
+      children:
+        edge_routers:
+          hosts:
+            edge_rtr_1:
+              ansible_host: 2001:32:19:86::1
+            edge_rtr_2:
+              ansible_host: 2001:32:19:86::2
+        stream_routers:
+          hosts:
+            rtr_1:
+              ansible_host: 172.19.19.1
+            rtr_2:
+              ansible_host: 10.0.0.10
+        vpn_routers:
+          hosts:
+            dmvpn_hub:
+              ansible_host: 192.168.0.1
+            rtr_tx_1:
+              ansible_host: 192.168.0.4
+            rtr_tx_2:
+              ansible_host: 192.168.0.5
+            rtr_br_1:
+              ansible_host: 192.168.0.2
+            rtr_br_2:
+              ansible_host: 192.168.0.3
+    
+    firewalls:
+      children:
+        svr_firewalls:
+          hosts:
+            svr_firewall_1:
+              ansible_host: 172.19.18.1
+            svr_firewall_2:
+              ansible_host: 172.19.18.2
+        edge_firewalls:
+          hosts:
+            edge_fw_1:
+              ansible_host: 2001:32:19:86::253
+            edge_fw_2:
+              ansible_host: 2001:32:19:86::254

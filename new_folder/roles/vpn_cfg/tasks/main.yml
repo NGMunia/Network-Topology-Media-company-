@@ -1,0 +1,31 @@
+---
+- name: "Configuring isakmp policy...."
+  cisco.ios.ios_config:
+    lines:
+      - hash sha256
+      - authentication pre-share
+      - group 14
+      - lifetime 7200
+      - encryption aes 192
+    parents: crypto isakmp policy {{isakmp_policy}}
+
+- name: "configuring crypto pre-shared key...."
+  cisco.ios.ios_config:
+    lines:
+      - crypto isakmp key {{pre_shared_key}} address ipv6 ::/0
+  
+- name: "Configuring IKE phase 2 transform sets....."
+  cisco.ios.ios_config:
+    lines: 
+      - mode transport
+    parents: crypto ipsec transform-set {{transform_set_name}} esp-sha-hmac esp-aes 
+
+- name: "configuring IKE phase 2 crypto profile...."
+  cisco.ios.ios_config:
+    lines:
+      - set transform-set {{transform_set_name}}
+    parents: crypto ipsec profile {{profile_name}}
+
+  notify: save running config
+  
+     
