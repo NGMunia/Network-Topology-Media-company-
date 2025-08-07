@@ -1,4 +1,5 @@
 /Configs
 /main.py
-/new_folder/verify.yml
-/new_folder/vlans_config.yml
+/home/munia/Network-Topology-Media-company-/ansible/verify.yaml
+/home/munia/Network-Topology-Media-company-/ansible/vlans_config.yml
+
