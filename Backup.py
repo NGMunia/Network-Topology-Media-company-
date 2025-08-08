@@ -32,8 +32,7 @@ with open (f'{filepath}/Data.csv', 'w')as f:
     write_data = writer(f)
     write_data.writerow(['Hostname','IP address','Software Image','Version','Serial number'])
     for devices in chain(vpn_routers.values(), uplink_routers.values(), 
-                     Edge_Routers.values(), vpn_routers.values(), svr_firewalls.values(),
-                     edge_firewalls.values()):
+                         Edge_Routers.values(), svr_firewalls.values(),edge_firewalls.values()):
         c = ConnectHandler(**devices)
         c.enable()
         output = c.send_command('show version',use_textfsm=True)[0]

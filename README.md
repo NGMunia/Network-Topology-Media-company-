@@ -51,15 +51,15 @@ The network topology is designed as a collapsed core, where the core switches as
 InterVLAN routing is configured, enabling communication between different VLANs within the network.
 
 
-**Multi-Area OSPF**:
+**Multi-Area OSPFv3**:
 
 In the HQ region, OSPFv3 (both IPv4 and IPv6) is implemented to manage and optimize the routing infrastructure. 
 
-The network architecture employs inter-area OSPF, specifically designed to enhance scalability and manageability through the segmentation of the network into designated areas.
+The network is built using an inter-area OSPF architecture, which helps improve scalability and manageability by dividing the infrastructure into areas.
 
-By utilizing OSPF as the routing protocol and implementing inter-area OSPF, the network achieves a more modular and organized structure.
+This design promotes a modular and well-organized structure.
 
-Each designated area within the HQ region can operate independently, allowing for improved network performance, reduced routing overhead, (controlled LSA propagation).
+Within the HQ region, each area functions independently, leading to better overall performance, lower routing overhead, and more controlled propagation of LSAs.
 
 
 
@@ -227,6 +227,7 @@ Its primary function is to manage and automate network tasks through Python scri
 
 
 **Automating using Ansible playbook**
+
 The controller uses ansible YML files to automate the network with SSH acting as the southbound controller.
 Here's a sample OSPF verification playbook:
 
@@ -250,6 +251,7 @@ Here's a sample OSPF verification playbook:
  ```
 
 **Automation using Python:**
+
 Python uses Netmiko library.
 Netmiko relies on SSH as its Southbound Interface for communication with network devices. 
 
@@ -589,7 +591,6 @@ Sample SNMP config:
 * Routers and IOS firewalls: [i86bi_LinuxL3-AdvEnterpriseK9-M2_157_3_May_2018.bin](https://www.gns3.com/marketplace/appliances/cisco-iou-l3)
 * Switches: i86bi_linux_l2-adventerprisek9-ms.SSA.high_iron_20180510.bin
 * SDN conroller: [Ubuntu VM](https://ubuntu.com/desktop)
-* Windows server: [Windows_Server_2016_Datacenter_EVAL_en-us_14393_refresh](https://www.microsoft.com/en-us/evalcenter/evaluate-windows-server-2016)
 * IDS: [Ostinato Wireshark](https://gns3.com/marketplace/appliances/ostinato-wireshark)
 * UserPC: Windows 7 ISO VM
 * End-user PCs: [Webterm Docker](https://gns3.com/marketplace/appliances/webterm)
