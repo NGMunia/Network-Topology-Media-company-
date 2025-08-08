@@ -37,8 +37,8 @@ vpn_routers  =  {
                       'secret': Secret,
                       'password': Password,
                       'ip':'192.168.0.3'
-                    }     
-            }
+                    } }
+
 uplink_routers =   {
          'STR_RTR': {
                       'device_type':'cisco_ios',
@@ -53,10 +53,9 @@ uplink_routers =   {
                       'secret': Secret,
                       'password': Password,
                       'ip':'172.19.19.1'
-                    }
-          }
+                    } }
 
-svr_firewalls=   {
+svr_firewalls =   {
         'SVR_FW_1': {
                       'device_type':'cisco_ios',
                       'username': Username,
@@ -70,8 +69,7 @@ svr_firewalls=   {
                       'secret': Secret,
                       'password': Password,
                       'ip':'172.19.18.2'
-                   }
-                 }
+                   } }
 
 edge_firewalls = {
        'BDR_FW_1': {
@@ -87,8 +85,7 @@ edge_firewalls = {
                       'secret': Secret,
                       'password': Password,
                       'ip':'2001:32:19:86::254'
-                   }
-                 }
+                   } }
 
 Edge_Routers = {
           'Edge-1': {
@@ -104,70 +101,69 @@ Edge_Routers = {
                       'secret': Secret,
                       'password': Password,
                       'ip':'2001:32:19:86::2'
-                    }
-          }
-# Switches= {
-          #  'CORE-1': {
-          #             'device_type':'cisco_ios',
-          #             'username': Username,
-          #             'secret': Secret,
-          #             'password': Password,
-          #             'ip':'10.0.0.1'
-          #             },
-#           'MGT-SW': {
-#                       'device_type':'cisco_ios',
-#                       'username': Username,
-#                       'secret': Secret,
-#                       'password': Password,
-#                       'ip':'192.168.20.10'
-#                     },
-#         'SW-BLD-1': {
-#                       'device_type':'cisco_ios',
-#                       'username': Username,
-#                       'secret': Secret,
-#                       'password': Password,
-#                       'ip':'192.168.12.10'
-#                     },
-#         'SW-BLD-2': {
-#                       'device_type':'cisco_ios',
-#                       'username': Username,
-#                       'secret': Secret,
-#                       'password': Password,
-#                       'ip':'192.168.12.11'
-#                     },
-#           'SW-BR1': {
-#                       'device_type':'cisco_ios',
-#                       'username': Username,
-#                       'secret': Secret,
-#                       'password': Password,
-#                       'ip':'10.1.10.10'
-#                     },
-#           'SW-BR2': {
-#                       'device_type':'cisco_ios',
-#                       'username': Username,
-#                       'secret': Secret,
-#                       'password': Password,
-#                       'ip':'10.1.20.10'
-#                     },
-#          'SW-SERV': {
-#                       'device_type':'cisco_ios',
-#                       'username': Username,
-#                       'secret': Secret,
-#                       'password': Password,
-#                       'ip':'192.168.12.253'
-#                     },
-#         'SW1-Edge': {
-#                       'device_type':'cisco_ios',
-#                       'username': Username,
-#                       'secret': Secret,
-#                       'password': Password,
-#                       'ip':'10.0.50.10'
-#                     },
-#         'SW2-Edge': {
-#                       'device_type':'cisco_ios',
-#                       'username': Username,
-#                       'secret': Secret,
-#                       'password': Password,
-#                       'ip':'10.0.50.11'
-#                     }               
-#           }
+                    } }
+
+Switches= {
+           'CORE_1': {
+                      'device_type':'cisco_ios',
+                      'username': Username,
+                      'secret': Secret,
+                      'password': Password,
+                      'ip':'172.19.16.1'
+                      },
+          'CORE_2': {
+                      'device_type':'cisco_ios',
+                      'username': Username,
+                      'secret': Secret,
+                      'password': Password,
+                      'ip':'172.19.116.1'
+                    },
+        'SW-BLD-1': {
+                      'device_type':'cisco_ios',
+                      'username': Username,
+                      'secret': Secret,
+                      'password': Password,
+                      'ip':'172.19.16.10'
+                    },
+        'SW-BLD-2': {
+                      'device_type':'cisco_ios',
+                      'username': Username,
+                      'secret': Secret,
+                      'password': Password,
+                      'ip':'172.19.16.11'
+                    },
+        'SW-BLD-3': {
+                      'device_type':'cisco_ios',
+                      'username': Username,
+                      'secret': Secret,
+                      'password': Password,
+                      'ip':'172.19.16.12'
+                    },
+          'SW-BR2': {
+                      'device_type':'cisco_ios',
+                      'username': Username,
+                      'secret': Secret,
+                      'password': Password,
+                      'ip':'10.1.20.10'
+                    },
+          'SW-SVR': {
+                      'device_type':'cisco_ios',
+                      'username': Username,
+                      'secret': Secret,
+                      'password': Password,
+                      'ip':'172.19.18.10'
+                    },
+        'SW1-Edge': {
+                      'device_type':'cisco_ios',
+                      'username': Username,
+                      'secret': Secret,
+                      'password': Password,
+                      'ip':'2001:32:19:86::10'
+                    },
+        'SW2-Edge': {
+                      'device_type':'cisco_ios',
+                      'username': Username,
+                      'secret': Secret,
+                      'password': Password,
+                      'ip':'2001:32:19:86::11'
+                    } }
