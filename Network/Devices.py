@@ -103,7 +103,7 @@ Edge_Routers = {
                       'ip':'2001:32:19:86::2'
                     } }
 
-Switches= {
+Core_Switches= {
            'CORE_1': {
                       'device_type':'cisco_ios',
                       'username': Username,
@@ -117,7 +117,8 @@ Switches= {
                       'secret': Secret,
                       'password': Password,
                       'ip':'172.19.116.1'
-                    },
+                    }}
+Access_switches= {
         'SW-BLD-1': {
                       'device_type':'cisco_ios',
                       'username': Username,
@@ -139,20 +140,23 @@ Switches= {
                       'password': Password,
                       'ip':'172.19.16.12'
                     },
-          'SW-BR2': {
+       'SW-BRANCH': {
                       'device_type':'cisco_ios',
                       'username': Username,
                       'secret': Secret,
                       'password': Password,
-                      'ip':'10.1.20.10'
-                    },
+                      'ip':'172.19.116.10'
+                    } }
+Svr_switches = {
           'SW-SVR': {
                       'device_type':'cisco_ios',
                       'username': Username,
                       'secret': Secret,
                       'password': Password,
                       'ip':'172.19.18.10'
-                    },
+                    } }
+
+Border_switches ={
         'SW1-Edge': {
                       'device_type':'cisco_ios',
                       'username': Username,

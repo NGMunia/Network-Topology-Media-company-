@@ -1,0 +1,26 @@
+
+- name: CONFIGURING VLANS AND SVIs 
+  hosts: access_switches
+  gather_facts: no
+  vars:
+    vlan_config:
+      - id: 10
+        name: STUDIO_BROADCAST
+
+      - id: 11
+        name: EDITORIAL
+
+      - id: 12
+        name: HR_ADMIN_ACC
+
+      - id: 13
+        name: EXECUTIVE
+
+      - id: 14
+        name: INTERNET_USERS
+
+      - id: 15
+        name: IoT
+  roles:
+    - vlans
+

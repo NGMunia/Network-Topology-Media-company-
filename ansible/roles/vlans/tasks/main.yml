@@ -1,0 +1,9 @@
+---
+- name: "create VLANs"
+  cisco.ios.ios_config:
+    lines: 
+      - name {{item.name}}
+    parents: vlan {{item.id}}
+  loop: "{{vlan_config}}"
+  notify: save_running_config
+...
