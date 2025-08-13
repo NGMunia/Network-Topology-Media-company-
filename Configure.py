@@ -4,7 +4,7 @@ from itertools import chain
 from rich import print as rp
 from rich.prompt import Prompt
 from jinja2 import FileSystemLoader, Environment
-from Network.Devices import uplink_routers, svr_firewalls, Edge_Routers, vpn_routers, edge_firewalls
+from Network.Devices import uplink_routers, svr_firewalls, Edge_Routers, vpn_routers, edge_firewalls,Access_switches, Core_Switches,Svr_switches, Border_switches
 
 
 
@@ -37,7 +37,8 @@ for devices in chain(uplink_routers.values(),Edge_Routers.values()):
 # Configure banner MOTD
 rp('[cyan]----------Configuring MOTD banner---------[/cyan]')
 for devices in chain(uplink_routers.values(), vpn_routers.values(),edge_firewalls.values(), 
-                     svr_firewalls.values(),Edge_Routers.values()):
+                     svr_firewalls.values(),Edge_Routers.values(),Access_switches.values(),
+                     Svr_switches.values(),Core_Switches.values(),Border_switches.values()):
     c = ConnectHandler(**devices)
     c.enable()
     host = c.send_command('show version',use_textfsm=True)[0]['hostname']
@@ -45,7 +46,7 @@ for devices in chain(uplink_routers.values(), vpn_routers.values(),edge_firewall
                 'banner login @',
                f'{"*"*50}',
                f'{" "*13}{host}',
-               f'{" "*7}RMS MEDIA COMPANY LIMITED',
+               f'{" "*5}RMS MEDIA SERVICES COMPANY LIMITED',
                f'{" "}Unauthorized access is strictly forbidden',
                f'{"*"*50}',
                '@']

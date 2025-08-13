@@ -62,10 +62,15 @@ all:
             Acc_sw_4:
               ansible_host: 172.19.116.10
         border_switches:
+          hosts:
             edge_sw_1:
               ansible_host: 2001:32:19:86::10
             edge_sw_2:
               ansible_host: 2001:32:19:86::11
+        svr_switches:
+          hosts:
+            svr_sw_1:
+              ansible_host: 172.19.18.10
             
 
           
