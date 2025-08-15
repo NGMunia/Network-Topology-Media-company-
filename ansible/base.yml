@@ -1,0 +1,41 @@
+
+---
+- name: RESTRICT VTY ACCESS 
+  hosts: all
+  gather_facts: no
+
+  tasks:
+    - name: configuring IPv4 ACL...
+      cisco.ios.ios_config:
+        lines:
+          - permit tcp 192.168.16.0 0.0.0.255 any eq 22
+          - permit tcp host 172.19.18.200 any eq 22
+          - deny ip any any log
+        parents: ip access-list extended VTY-ACL
+
+
+    - name: Configuring IPv6 ACL.....
+      cisco.ios.ios_config:
+        lines:
+          - permit tcp 2001:32:19:16::/64 any eq 22
+          - permit tcp host 2001:32:19:18::200 any eq 22
+          - deny ipv6 any any log
+        parents: ipv6 access-list VTY-ACL-IPv6
+
+  
+    - name: Appling ACLs on the VTY lines....
+      cisco.ios.ios_config:
+        lines:
+          - logging synch
+          - access-class VTY-ACL in
+          - ipv6 access-class VTY-ACL-IPv6 in
+        parents: line vty 0 4
+
+      notify: save_running_config
+
+  handlers:
+    - name: save_running_config
+      cisco.ios.ios_config:
+        save_when: always
+
+
