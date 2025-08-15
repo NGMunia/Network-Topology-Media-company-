@@ -13,7 +13,6 @@
           - deny ip any any log
         parents: ip access-list extended VTY-ACL
 
-
     - name: Configuring IPv6 ACL.....
       cisco.ios.ios_config:
         lines:
@@ -22,7 +21,6 @@
           - deny ipv6 any any log
         parents: ipv6 access-list VTY-ACL-IPv6
 
-  
     - name: Appling ACLs on the VTY lines....
       cisco.ios.ios_config:
         lines:
