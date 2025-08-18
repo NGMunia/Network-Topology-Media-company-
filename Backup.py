@@ -26,28 +26,28 @@ for devices in chain(vpn_routers.values(), uplink_routers.values(),
 
 
 
-# DEVICES' INVENTORY
-rp('\n[bold cyan]----------Device Inventory----------[/bold cyan]')
-filepath = Prompt.ask('[bright_magenta]Inventory filepath [/]')
-with open (f'{filepath}/Data.csv', 'w')as f:
-    write_data = writer(f)
-    write_data.writerow(['Hostname','IP address','Software Image','Version','Serial number'])
-    for devices in chain(vpn_routers.values(), uplink_routers.values(), 
-                     Edge_Routers.values(), svr_firewalls.values(),edge_firewalls.values(),Svr_switches.values(),
-                     Border_switches.values(),Access_switches.values(),Core_Switches.values()):
-        c = ConnectHandler(**devices)
-        c.enable()
-        output = c.send_command('show version',use_textfsm=True)[0]
+# # DEVICES' INVENTORY
+# rp('\n[bold cyan]----------Device Inventory----------[/bold cyan]')
+# filepath = Prompt.ask('[bright_magenta]Inventory filepath [/]')
+# with open (f'{filepath}/Data.csv', 'w')as f:
+#     write_data = writer(f)
+#     write_data.writerow(['Hostname','IP address','Software Image','Version','Serial number'])
+#     for devices in chain(vpn_routers.values(), uplink_routers.values(), 
+#                      Edge_Routers.values(), svr_firewalls.values(),edge_firewalls.values(),Svr_switches.values(),
+#                      Border_switches.values(),Access_switches.values(),Core_Switches.values()):
+#         c = ConnectHandler(**devices)
+#         c.enable()
+#         output = c.send_command('show version',use_textfsm=True)[0]
 
-        hostname = output['hostname']
-        ip_addr  = devices['ip']
-        image    = output['software_image']
-        version  = output['version']
-        serial   = output['serial']
+#         hostname = output['hostname']
+#         ip_addr  = devices['ip']
+#         image    = output['software_image']
+#         version  = output['version']
+#         serial   = output['serial']
 
-        write_data.writerow([hostname,ip_addr,image,version,serial])
-        rp(f'Finished taking {hostname} Inventory')
-        c.disconnect()
+#         write_data.writerow([hostname,ip_addr,image,version,serial])
+#         rp(f'Finished taking {hostname} Inventory')
+#         c.disconnect()
 
 
 

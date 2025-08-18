@@ -1,10 +1,11 @@
 
 ---
-- name: RESTRICT VTY ACCESS 
+- name: BASE CONFIGURATIONS
   hosts: all
   gather_facts: no
 
   tasks:
+  # CONFIGURING VTY ACCESS CONTROL RESTRICTION
     - name: configuring IPv4 ACL...
       cisco.ios.ios_config:
         lines:
@@ -12,7 +13,6 @@
           - permit tcp host 172.19.18.200 any eq 22
           - deny ip any any log
         parents: ip access-list extended VTY-ACL
-
     - name: Configuring IPv6 ACL.....
       cisco.ios.ios_config:
         lines:
@@ -20,7 +20,6 @@
           - permit tcp host 2001:32:19:18::200 any eq 22
           - deny ipv6 any any log
         parents: ipv6 access-list VTY-ACL-IPv6
-
     - name: Appling ACLs on the VTY lines....
       cisco.ios.ios_config:
         lines:
@@ -28,6 +27,14 @@
           - access-class VTY-ACL in
           - ipv6 access-class VTY-ACL-IPv6 in
         parents: line vty 0 4
+
+# CONFIGURING SYSLOG 
+    - name: Configuring Syslog....
+      cisco.ios.ios_config:
+        lines:
+          - logging host 172.19.18.100
+          - logging host ipv6 2001:32:19:18::100
+          - logging monitor informational
 
       notify: save_running_config
 
