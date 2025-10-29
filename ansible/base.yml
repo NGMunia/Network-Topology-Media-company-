@@ -14,7 +14,7 @@
           - permit tcp 192.168.16.0 0.0.0.255 any eq 22
           - permit tcp host 172.19.18.200 any eq 22
           - deny ip any any log
-        parents: ip access-list extended VTY-ACL
+        parents: ip access-list extended VTY-ACL-IPv4
     - name: Configuring IPv6 ACL.....
       cisco.ios.ios_config:
         lines:
