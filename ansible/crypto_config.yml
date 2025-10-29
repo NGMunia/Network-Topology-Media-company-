@@ -1,5 +1,7 @@
 ---
-## CONFIGURE CRYPTOGRAPHY ON VPN ROUTERS ##
+#-----------------------------------------------------
+# CONFIGURE CRYPTOGRAPHY ON VPN ROUTERS 
+#-----------------------------------------------------
 - name: CONFIGURING VPN IPSEC SETTINGS ON VPN ROUTERS
   hosts: vpn_routers
   gather_facts: no

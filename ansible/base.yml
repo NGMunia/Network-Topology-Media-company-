@@ -5,7 +5,9 @@
   gather_facts: no
 
   tasks:
+  #---------------------------------------------
   # CONFIGURING VTY ACCESS CONTROL RESTRICTION
+  #---------------------------------------------
     - name: configuring IPv4 ACL...
       cisco.ios.ios_config:
         lines:
@@ -28,7 +30,9 @@
           - ipv6 access-class VTY-ACL-IPv6 in
         parents: line vty 0 4
 
-# CONFIGURING SYSLOG 
+  # --------------------------------------------
+  # CONFIGURING SYSLOG 
+  #---------------------------------------------
     - name: Configuring Syslog....
       cisco.ios.ios_config:
         lines:
@@ -36,6 +40,9 @@
           - logging host ipv6 2001:32:19:18::100
           - logging monitor informational
 
+  #----------------------------------------------
+  # Save configurations
+  #----------------------------------------------
       notify: save_running_config
 
   handlers:
