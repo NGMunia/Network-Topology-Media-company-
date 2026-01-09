@@ -390,6 +390,8 @@ event manager applet Automatic_Backup_Config
 DMVPN phase 2 with IPsec is used to secure communications between the HQ and the Branch spokes.
 EIGRP is the protocol of choice for routing through the mGRE tunnel.
 
+IPv6 is used as the transport network, while IPv4 is used as the overlay.
+
 ```bash
 DMVPN_HUB_ROUTER#sh crypto isakmp sa
 IPv4 Crypto ISAKMP SA
