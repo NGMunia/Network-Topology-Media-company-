@@ -9,12 +9,13 @@
 ![Automation](https://img.shields.io/badge/Automation-Python-orange)
 ![Routing](https://img.shields.io/badge/Routing-EIGRP%20%7C%20OSPF%20%7C%20BGP%20%7C%20Multicast-Red)
 ![Security](https://img.shields.io/badge/Security-CoPP%20%7C%20ZBF-blue)
+![Dualstack](https://img.shields.io/badge/Dualstack-IPv4%20%7C%20IPv6-blue)
 
 ---
 
 **summary of the network:**
 
-The topology demonstrates a Dual stack (IPv4 and IPv6) network topology with a collapsed core while employing software-defined networking (Automation).
+The topology demonstrates a **Dual stack (IPv4 and IPv6)** network topology with a collapsed core while employing software-defined networking (Automation).
 
 All remote sites are linked with a single-hub DMVPN for site-to-site VPN connectivity, with IPv6 as the transport network and IPv4 as the overlay network. 
 
