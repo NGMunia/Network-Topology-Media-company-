@@ -5,7 +5,7 @@
 
 ![VPNs](https://img.shields.io/badge/VPNs-DMVPN%20%7C%20IPSec-blue)
 ![Switching](https://img.shields.io/badge/Switching-LACP%20%7C%20VLANs-Red)
-![Assurance](https://img.shields.io/badge/Assurance-SNMP%20%7C%20%Syslog%20%7C%20SPAN-green)
+![Assurance](https://img.shields.io/badge/Assurance-SNMP%20%7C%20Syslog%20%7C%20SPAN-green)
 ![Automation](https://img.shields.io/badge/Automation-Python-orange)
 ![Routing](https://img.shields.io/badge/Routing-EIGRP%20%7C%20OSPF%20%7C%20BGP%20%7C%20Multicast-green)
 ![Security](https://img.shields.io/badge/Security-CoPP%20%7C%20ZBF-blue)
