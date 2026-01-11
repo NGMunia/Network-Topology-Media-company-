@@ -1,6 +1,17 @@
 
 # Network-Topology (media Company)
 
+
+
+![VPNs](https://img.shields.io/badge/VPNs-DMVPN20%7C%20IPSec-blue)
+![Switching](https://img.shields.io/badge/Switching-LACP20%7C%20VLANs-blue)
+![Assurance](https://img.shields.io/badge/IPsecAssurance-SNMPZ20BF%7C%20SyslogZ20BF%7C%20SPANZ20BF%7C%20RSPANZ20BF%7C%20QoS-red)
+![Automation](https://img.shields.io/badge/Automation-Python-orange)
+![Routing](https://img.shields.io/badge/Routing-20%7C%20EIGRP20%7C%20OSPF20%7C%20BGPMulticast-green)
+![Security](https://img.shields.io/badge/Security-Z20BF%7C%20CoPPZ20BF%7C%20IPsec-blue)
+
+---
+
 **summary of the network:**
 
 The topology demonstrates a Dual stack (IPv4 and IPv6) network topology with a collapsed core while employing software-defined networking (Automation).
