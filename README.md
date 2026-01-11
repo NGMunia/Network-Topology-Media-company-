@@ -3,12 +3,12 @@
 
 
 
-![VPNs](https://img.shields.io/badge/VPNs-DMVPN20%7C%20IPSec-blue)
-![Switching](https://img.shields.io/badge/Switching-LACP20%7C%20VLANs-blue)
-![Assurance](https://img.shields.io/badge/IPsecAssurance-SNMPZ20BF%7C%20SyslogZ20BF%7C%20SPANZ20BF%7C%20RSPANZ20BF%7C%20QoS-red)
+![VPNs](https://img.shields.io/badge/VPNs-DMVPN%20%7C%20IPSec-blue)
+![Switching](https://img.shields.io/badge/Switching-LACP%20%7C%20VLANs-blue)
+![Assurance](https://img.shields.io/badge/Assurance-SNMPZ2$%BF%7C%20SyslogZ20BF%7C%20SPANZ20BF%7C%20RSPANZ20BF%7C%20QoS-red)
 ![Automation](https://img.shields.io/badge/Automation-Python-orange)
-![Routing](https://img.shields.io/badge/Routing-20%7C%20EIGRP20%7C%20OSPF20%7C%20BGPMulticast-green)
-![Security](https://img.shields.io/badge/Security-Z20BF%7C%20CoPPZ20BF%7C%20IPsec-blue)
+![Routing](https://img.shields.io/badge/Routing-EIGRP%20%7C%20OSPF20%7C%20BGPMulticast-green)
+![Security](https://img.shields.io/badge/Security-ZBF207C%20%CoPP%20%7C%20I%Psec-blue)
 
 ---
 
