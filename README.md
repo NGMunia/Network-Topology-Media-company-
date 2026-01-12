@@ -111,7 +111,7 @@ CORE_SWITCH#
 
 **EIGRP**:
 
-Within the network infrastructure, EIGRP is used in routing within mGRE tunnels, specifically configured under DMVPN architecture.
+Within the network infrastructure, EIGRP (Named mode) is used in routing within mGRE tunnels, specifically configured under DMVPN architecture.
 
 To enhance the efficiency of the network, spokes within the mGRE tunnels are optimized as stub routers. 
 
