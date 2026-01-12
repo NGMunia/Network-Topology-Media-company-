@@ -195,8 +195,6 @@ Egress traffic is directed to exit through the Edge-1 router, by configuring two
 
 Ingress traffic is routed through Edge-2 by applying AS-prepending to  32.19.86.0/24 prefix on Edge-1 outbound, influencing the inbound traffic flow through Edge-2 as a better path.
 
-This load-balances traffic with Egress traffic from the Autonomous system goes through BRTR1 (VRRPv3) and Ingress traffic via BRTR2( through BGP AS prepending)
-
 
 ```bash
 router bgp 5689
