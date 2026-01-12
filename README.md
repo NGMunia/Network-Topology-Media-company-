@@ -182,7 +182,7 @@ STREAM_MEDIA_ROUTER#sh ip mroute
 ```
 
 
-**BGP**:
+**BGP and Load bancing**:
 
 BGP peering is formed between EDGE routers and their connected ISPs for both IPv4 and IPv6.
 Within the HQ's network architecture, BGP is implemented with a focus as a non-transit site. 
@@ -195,9 +195,11 @@ Egress traffic is directed to exit through the Edge-1 router, by configuring two
 
 Ingress traffic is routed through Edge-2 by applying AS-prepending to  32.19.86.0/24 prefix on Edge-1 outbound, influencing the inbound traffic flow through Edge-2 as a better path.
 
+This load-balances traffic with Egress traffic from the Autonomous system goes through BRTR1 (VRRPv3) and Ingress traffic via BRTR2( through BGP AS prepending)
+
 
 ```bash
-rrouter bgp 5689
+router bgp 5689
  bgp log-neighbor-changes
  neighbor 2001:4:6:2::1 remote-as 100
  neighbor 44.67.27.5 remote-as 100
