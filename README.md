@@ -69,11 +69,13 @@ The network Employs various layer 2 protocols namely:
 
 **LACP**:
 
-The core switch and Access switches are configured with LACP in active-active mode.
-Verification is seen below on the ACC-SW1:
+- Aggregates multiple physical switchports into a single logical interface to increase bandwidth and provide load balancing
+- Improves link redundancy and resiliency by preventing single-link failures
+- Implemented between core and access switches using **LACP active–active mode**
 
 
 ``` bash
+#To verify LACP#
 ACCESS-SWITCH-1#sh etherchannel summary
 ! Output omitted for brevity
 Number of channel-groups in use: 2
@@ -94,20 +96,20 @@ The network Employs various layer 3 protocols namely:
 **InterVLAN Routing**:
 
 
-The network topology is designed as a collapsed core, where the core switches assume the responsibilities of both the core and distribution layers. 
+- The network topology is designed as a collapsed core, where the core switches assume the responsibilities of both the core and distribution layers. 
 
-InterVLAN routing is configured, enabling communication between different VLANs within the network.
+- InterVLAN routing is configured, enabling communication between different VLANs within the network.
 
 
 **Multi-Area OSPFv3**:
 
-In the HQ region, OSPFv3 (both IPv4 and IPv6) is implemented to manage and optimize the routing infrastructure. 
+- In the HQ region, OSPFv3 (both IPv4 and IPv6) is implemented to manage and optimize the routing infrastructure. 
 
-The network is built using an inter-area OSPF architecture, which helps improve scalability and manageability by dividing the infrastructure into areas.
+- The network is built using an inter-area OSPF architecture, which helps improve scalability and manageability by dividing the infrastructure into areas.
 
-This design promotes a modular and well-organized structure.
+- This design promotes a modular and well-organized structure.
 
-Within the HQ region, each area functions independently, leading to better overall performance, lower routing overhead, and more controlled propagation of LSAs.
+- Within the HQ region, each area functions independently, leading to better overall performance, lower routing overhead, and more controlled propagation of LSAs.
 
 
 
@@ -147,13 +149,13 @@ CORE_SWITCH#
 
 **EIGRP**:
 
-Within the network infrastructure, EIGRP (Named mode) is used in routing within mGRE tunnels, specifically configured under DMVPN architecture.
+- Within the network infrastructure, EIGRP (Named mode) is used in routing within mGRE tunnels, specifically configured under DMVPN architecture.
 
-To enhance the efficiency of the network, spokes within the mGRE tunnels are optimized as stub routers. 
+- To enhance the efficiency of the network, spokes within the mGRE tunnels are optimized as stub routers. 
 
-This minimizes the likelihood of Stuck-in-Active scenarios.
+- This minimizes the likelihood of Stuck-in-Active scenarios.
 
-Bandwidth optimization feature is employed to limit EIGRP bandwidth usage.
+- Bandwidth optimization feature is employed to limit EIGRP bandwidth usage.
 
 
 ```bash
@@ -183,9 +185,10 @@ router eigrp EIGRP
 
 **Multicast  PIM-sparse-mode**
 
-The media server is used to send multicast traffic from studio to main uplink station.
+- The media server is used to send multicast traffic from studio to main uplink station.
 
-The stream_RTR acts as RP.
+- The stream_RTR acts as RP.
+
 
 To verify Multicast routing:
 
@@ -218,18 +221,19 @@ STREAM_MEDIA_ROUTER#sh ip mroute
 ```
 
 
-**BGP and Asymetric Load bancing**:
+**BGP and Asymetric Load balancing**:
 
-BGP peering is formed between EDGE routers and their connected ISPs for both IPv4 and IPv6.
-Within the HQ's network architecture, BGP is implemented with a focus as a non-transit site. 
+- BGP peering is formed between EDGE routers and their connected ISPs for both IPv4 and IPv6.
+
+- Within the HQ's network architecture, BGP is implemented with a focus as a non-transit site. 
 In a non-transit scenario, the network primarily manages its own routes and communicates with external networks, but does not forward traffic on behalf of third-party networks.
 
-This reduces the size of the BGP routing table.
+- This reduces the size of the BGP routing table.
 
 
-Egress traffic is directed to exit through the Edge-1 router, by configuring two Default IPv6 routes on the edge firewalls,one in conjuction with IPSLA (object tracking) and the other with a higher AD
+- Egress traffic is directed to exit through the Edge-1 router, by configuring two Default IPv6 routes on the edge firewalls,one in conjuction with IPSLA (object tracking) and the other with a higher AD
 
-Ingress traffic is routed through Edge-2 by applying AS-prepending to  32.19.86.0/24 prefix on Edge-1 outbound, influencing the inbound traffic flow through Edge-2 as a better path.
+- Ingress traffic is routed through Edge-2 by applying AS-prepending to  32.19.86.0/24 prefix on Edge-1 outbound, influencing the inbound traffic flow through Edge-2 as a better path.
 
 
 ```bash
@@ -262,21 +266,26 @@ route-map AS-PREPENDING-MAP permit 10
 
 **Redistribution**:
 
-OSPFv3 redistribution: Redistributes EIGRP spoke LAN IPv4 prefixes into the OSPF domain.
-EIGRP redistribution: Redistributes Area 18 and 19 IPv4 prefixes into EIGRP.
-DMVPN-ROUTER is responsible for redistribution between OSPF and EIGRP domain.
-The EIGRP Add-path feature enables redundant prefix advertisement for prefixes in Regional offices.
+- OSPFv3 redistribution: Redistributes EIGRP spoke LAN IPv4 prefixes into the OSPF domain.
+
+- EIGRP redistribution: Redistributes Area 18 and 19 IPv4 prefixes into EIGRP.
+
+- DMVPN-ROUTER is responsible for redistribution between OSPF and EIGRP domain.
+
+- The EIGRP Add-path feature enables redundant prefix advertisement for prefixes in Regional offices.
 
 ---
 
 ## Automating the Network:
-The SDN controller is hosted on an Ubuntu server, serving as a centralized platform for orchestrating network configurations. 
-Its primary function is to manage and automate network tasks through Python scripts and Ansible playbooks.
+- The SDN controller is hosted on an Ubuntu server, serving as a centralized platform for orchestrating network configurations. 
+
+- Its primary function is to manage and automate network tasks through Python scripts and Ansible playbooks.
 
 
 **Automating using Ansible playbook**
 
-The controller uses ansible YML files to automate the network with SSH acting as the southbound controller.
+- The controller uses ansible YML files to automate the network with SSH acting as the southbound controller.
+
 Here's a sample OSPF verification playbook:
 
 ```bash
@@ -300,8 +309,8 @@ Here's a sample OSPF verification playbook:
 
 **Automation using Python:**
 
-Python uses Netmiko library.
-Netmiko relies on SSH as its Southbound Interface for communication with network devices. 
+- Python uses Netmiko library.
+- Netmiko relies on SSH as its Southbound Interface for communication with network devices. 
 
 ```bash
 # Update the package list
@@ -339,11 +348,11 @@ print(c.send_command('show run'))
 #### JINJA2
 
 
-Jinja2 is a templating engine that allows you to create dynamic templates with placeholders for variables.
+- Jinja2 is a templating engine that allows you to create dynamic templates with placeholders for variables.
 
-When combined with network automation tools like Netmiko Jinja2 helps streamline the configuration process for multiple devices.
+- When combined with network automation tools like Netmiko Jinja2 helps streamline the configuration process for multiple devices.
 
-First, you'll create a Jinja2 template that contains placeholders for the variables you want to use.
+- First, you'll create a Jinja2 template that contains placeholders for the variables you want to use.
 
 To define a variable in a Jinja2 template, you use the **{{ }} syntax**.
 
@@ -415,8 +424,9 @@ print(c.send_config_set(commands))
 
 **Automating Backup using EEM**
 
-Embedded event manager can be used to automate network devices' tasks.
-In this case, EEM is used to automate backup of start-up configs on a scheduled basis; every Mon to Sat
+- Embedded event manager can be used to automate network devices' tasks.
+
+- In this case, EEM is used to automate backup of start-up configs on a scheduled basis; every Mon to Sat
 at 1430hrs.
 
 ```bash
@@ -435,10 +445,11 @@ event manager applet Automatic_Backup_Config
 ---
 
 ## VPN Services:
-DMVPN phase 2 with IPsec is used to secure communications between the HQ and the Branch spokes.
+- DMVPN phase 2 with IPsec is used to secure communications between the HQ and the Branch spokes.
+
 EIGRP is the protocol of choice for routing through the mGRE tunnel.
 
-IPv6 is used as the transport network, while IPv4 is used as the overlay.
+- IPv6 is used as the transport network, while IPv4 is used as the overlay.
 
 ```bash
 DMVPN_HUB_ROUTER#sh crypto isakmp sa
@@ -469,14 +480,17 @@ IPv6 Crypto ISAKMP SA
 
 **Zone-Based Firewalls**
 
-Zone-based firewall services are configured on the Edge-Firewalls (FW-EDGE) with stateful traffic inspection from Inside(Private network) to the Internet.
-This is done so that even though the whole IPv6 address block **2001:32:19::48** is advertised only 
+- Zone-based firewall services are configured on the Edge-Firewalls (FW-EDGE) with stateful traffic inspection from Inside(Private network) to the Internet.
+
+- This is done so that even though the whole IPv6 address block **2001:32:19::48** is advertised only 
 **2001:32:19:86::/64** is allowed from the Internet.
-The rest of the prefixes (used in LAN arent accessible)
+
+- The rest of the prefixes (used in LAN arent accessible)
 
 
-On the Network Mangement block Only DHCP, SYSLOG, DNS, NefFlow and MGT VLAN (172.19.16.0/24)traffic is allowed from outside-in
-The monitoring server is configured with 172.19.18.150 while DHCP server is 172.19.18.200
+- On the Network Mangement block Only DHCP, SYSLOG, DNS, NefFlow and MGT VLAN (172.19.16.0/24)traffic is allowed from outside-in
+
+- The monitoring server is configured with 172.19.18.150 while DHCP server is 172.19.18.200
 
 ```bash
 FW-MANAGEMENT-ZONE#sh policy-map type inspect zone-pair Outside-Inside-zone
@@ -516,16 +530,19 @@ Extended IP access list Outside-Inside-acl
 
 **Control plane Policing (CoPP)**
 
-CoPP is a security feature that protects the control plane of a router from unnecessary or Denial-of-Service (DoS) traffic. 
-It ensures routing stability, reachability, and packet delivery by providing filtering and rate-limiting capabilities for the control plane packets.
+- CoPP is a security feature that protects the control plane of a router from unnecessary or Denial-of-Service (DoS) traffic. 
 
-CoPP utilizes the MQC model similar to QOS in its implementation.
-It allows for the classification, marking, and policing of traffic based on various criteria.
-In the context of CoPP, the MQC model is used to define policies that control the traffic directed towards the control plane of the router or switch
+- It ensures routing stability, reachability, and packet delivery by providing filtering and rate-limiting capabilities for the control plane packets.
 
-Control plane traffic may be but not limited to Routing protcols, ICMP traffic, NAT, IPSec
+- CoPP utilizes the MQC model similar to QOS in its implementation.
 
-In this topology, COPP is configured on core (OSPF, ICMP, SSH traffic) and Edge routers (BGP, ICMP and SSH traffic).
+- It allows for the classification, marking, and policing of traffic based on various criteria.
+
+- In the context of CoPP, the MQC model is used to define policies that control the traffic directed towards the control plane of the router or switch
+
+- Control plane traffic may be but not limited to Routing protcols, ICMP traffic, NAT, IPSec
+
+- In this topology, COPP is configured on core (OSPF, ICMP, SSH traffic) and Edge routers (BGP, ICMP and SSH traffic).
 
 ```bash
 EDGE-ROUTER-1#sh policy-map control-plane
@@ -562,8 +579,9 @@ EDGE-ROUTER-1#sh policy-map control-plane
 
 ---
 # Quality of Service
-Scavenger traffic (torrents and leisure streaming platforms) is dropped.
-Social media traffic is policed to 512Kbps.
+- Scavenger traffic (torrents and leisure streaming platforms) is dropped.
+
+- Social media traffic is policed to 512Kbps.
 
 ```bash
 BRANCH-A-ROUTER-1#sh policy-map interface e0/0.10
@@ -603,12 +621,15 @@ BRANCH-A-ROUTER-1#sh policy-map interface e0/0.10
 
 ---
 ## Network Monitoring
-All Routers, Switches  are configured to send SNMP traps to the MGT server.
-The MGT server uses PRTG to solicit information via SNMP for general network monitoring, NetFlow for traffic analysis, and Syslog for the capture and analysis of system log data.
+- All Routers, Switches  are configured to send SNMP traps to the MGT server.
 
-On ISP-SW1 and ISP-SW2, we've set up RSPAN to capture VPN traffic and SPAN to capture internet-bound traffic. 
-These configurations help monitor and secure the network. The captured data is sent to an Intrusion Detection System (IDS) for analysis. 
-This approach enhances our ability to detect and address potential security issues in both VPN and internet traffic.
+- The MGT server uses PRTG to solicit information via SNMP for general network monitoring, NetFlow for traffic analysis, and Syslog for the capture and analysis of system log data.
+
+- On ISP-SW1 and ISP-SW2, we've set up RSPAN to capture VPN traffic and SPAN to capture internet-bound traffic. 
+
+- These configurations help monitor and secure the network. The captured data is sent to an Intrusion Detection System (IDS) for analysis. 
+
+- This approach enhances our ability to detect and address potential security issues in both VPN and internet traffic.
 ```bash
 Sample RSPAN and SPAN config:
 ISP-SWITCH-2#sh monitor session all
