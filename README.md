@@ -182,7 +182,7 @@ STREAM_MEDIA_ROUTER#sh ip mroute
 ```
 
 
-**BGP and Load bancing**:
+**BGP and Asymetric Load bancing**:
 
 BGP peering is formed between EDGE routers and their connected ISPs for both IPv4 and IPv6.
 Within the HQ's network architecture, BGP is implemented with a focus as a non-transit site. 
