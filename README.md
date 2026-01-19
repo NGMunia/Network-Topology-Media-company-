@@ -13,7 +13,8 @@
 
 ---
 
-**summary of the network:**
+## summary of the network:
+
 
 The topology demonstrates a **Dual stack (IPv4 and IPv6)** network topology with a collapsed core while employing software-defined networking (Automation).
 
@@ -27,6 +28,41 @@ Internet connectivity is through IPv6 while internal and remote site connectivit
 ![Topology](/Network/Topology.png)
 
 
+---
+## At a glance:
+
+**Design Highlights**
+
+- Dual‑stack architecture (IPv4 overlay / IPv6 transport)
+
+- Collapsed core design for scalability and simplicity
+
+- DMVPN Phase 2 for secure site‑to‑site connectivity
+
+- Multi‑protocol routing (OSPFv3, EIGRP, BGP)
+
+- Policy‑driven security (ZBF, CoPP)
+
+- Network automation using Python, Ansible, and Jinja2
+
+- Full monitoring, QoS, and traffic analysis
+
+
+**Technologies Used**
+
+- Routing: OSPFv3, EIGRP (Named), BGP, Multicast (PIM‑SM)
+
+- Switching: VLANs, LACP (EtherChannel)
+
+- VPN: DMVPN Phase 2 over IPSec
+
+- Security: Zone‑Based Firewall, CoPP
+
+- Automation: Ansible, Python (Netmiko), Jinja2, EEM
+
+- Monitoring: SNMP, Syslog, NetFlow, SPAN/RSPAN
+
+---
 ## Layer 2 connectivity:
 The network Employs various layer 2 protocols namely:
 
@@ -49,7 +85,7 @@ Group  Port-channel  Protocol    Ports
 2      Po2(SU)         LACP      Et1/2(P)    Et1/3(P)
 
 ```
-
+---
 
 ## Layer 3 connectivity:
 The network Employs various layer 3 protocols namely:
@@ -231,7 +267,7 @@ EIGRP redistribution: Redistributes Area 18 and 19 IPv4 prefixes into EIGRP.
 DMVPN-ROUTER is responsible for redistribution between OSPF and EIGRP domain.
 The EIGRP Add-path feature enables redundant prefix advertisement for prefixes in Regional offices.
 
-
+---
 
 ## Automating the Network:
 The SDN controller is hosted on an Ubuntu server, serving as a centralized platform for orchestrating network configurations. 
@@ -396,7 +432,7 @@ event manager applet Automatic_Backup_Config
  action 1.5 cli command "no file prompt quiet"
  action 1.6 syslog priority informational msg "TFTP backup successful"
 ```
-
+---
 
 ## VPN Services:
 DMVPN phase 2 with IPsec is used to secure communications between the HQ and the Branch spokes.
@@ -428,7 +464,7 @@ IPv6 Crypto ISAKMP SA
  state: QM_IDLE         conn-id:   1004 status: ACTIVE
 
 ```
-
+---
 ## Network Security:
 
 **Zone-Based Firewalls**
@@ -524,7 +560,7 @@ EDGE-ROUTER-1#sh policy-map control-plane
         conformed 0000 bps, exceeded 0000 bps, violated 0000 bps
 ```
 
-
+---
 # Quality of Service
 Scavenger traffic (torrents and leisure streaming platforms) is dropped.
 Social media traffic is policed to 512Kbps.
@@ -565,7 +601,7 @@ BRANCH-A-ROUTER-1#sh policy-map interface e0/0.10
         conformed 0000 bps, exceeded 0000 bps
 ```
 
-
+---
 ## Network Monitoring
 All Routers, Switches  are configured to send SNMP traps to the MGT server.
 The MGT server uses PRTG to solicit information via SNMP for general network monitoring, NetFlow for traffic analysis, and Syslog for the capture and analysis of system log data.
@@ -599,7 +635,7 @@ Sample SNMP config:
   snmp-server host 172.19.18.150 version 2c device_snmp
 ```
 
-
+---
 
 ## GNS3 Images used:
 * Routers and IOS firewalls: [i86bi_LinuxL3-AdvEnterpriseK9-M2_157_3_May_2018.bin](https://www.gns3.com/marketplace/appliances/cisco-iou-l3)
