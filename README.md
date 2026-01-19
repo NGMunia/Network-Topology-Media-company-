@@ -447,7 +447,7 @@ event manager applet Automatic_Backup_Config
 ## VPN Services:
 - DMVPN phase 2 with IPsec is used to secure communications between the HQ and the Branch spokes.
 
-EIGRP is the protocol of choice for routing through the mGRE tunnel.
+- EIGRP is the protocol of choice for routing through the mGRE tunnel (Scales well in large DMVPN Enterprises).
 
 - IPv6 is used as the transport network, while IPv4 is used as the overlay.
 
