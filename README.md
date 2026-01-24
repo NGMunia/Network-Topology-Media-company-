@@ -231,7 +231,7 @@ In a non-transit scenario, the network primarily manages its own routes and comm
 - This reduces the size of the BGP routing table.
 
 
-- Egress traffic is directed to exit through the Edge-1 router, by configuring two Default IPv6 routes on the edge firewalls,one in conjuction with IPSLA (object tracking) and the other with a higher AD
+- Egress traffic is directed to exit through the Edge-1 router, by configuring two Default IPv6 routes on the edge firewalls,one in conjuction with IPSLA (object tracking) and the other with a higher AD. EDGE1 is the egress router (VRRP election [Master router])
 
 - Ingress traffic is routed through Edge-2 by applying AS-prepending to  32.19.86.0/24 prefix on Edge-1 outbound, influencing the inbound traffic flow through Edge-2 as a better path.
 
